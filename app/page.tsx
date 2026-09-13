@@ -1,7 +1,9 @@
 "use client"
 
+import Link from "next/link";
 import BarChartComponent from "./components/charts/BarChartComponent";
 import BoxPlot from "./components/charts/BoxPlot";
+import DataTable from "./components/Table";
 
 
 export default function Home() {
@@ -50,12 +52,37 @@ export default function Home() {
     <div>
       <p>This is root page</p>
       {/* <BarChartComponent data={data} /> */}
-      <BoxPlot
+      {/* <BoxPlot
         data={[
           { category: "A", values: [12, 15, 18, 20, 21, 25] },
           { category: "B", values: [8, 10, 12, 13, 15, 17, 25] },
           { category: "C", values: [20, 21, 22, 25, 27, 30, 35, 100] },
         ]}
+      /> */}
+
+
+      <DataTable
+       data={data}
+       rowKey={datum => datum.name}
+       columns={[
+        {
+          key: "name",
+          header: "名前",
+          render: (datum) => <a><p className="bg-green-100 rounded-full">{datum.name}</p></a>
+        },
+        {
+          key: "uv",
+          header: "UV"
+        },
+        {
+          key: "amt",
+          header: "Amount"
+        },
+        {
+          key: "pv",
+          header: "PV"
+        }
+       ]}
       />
     </div>
   );
