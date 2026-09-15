@@ -1,4 +1,4 @@
-"use client";
+"use client"
 
 import {
   ScatterChart,
@@ -6,16 +6,20 @@ import {
   YAxis,
   Scatter,
   Tooltip,
-} from "recharts";
+  CartesianGrid
+} from "recharts"
 
 type ScatterGroupPlotDatum = {
-  category: string;
-  values: number[];
-};
+  category: string
+  values: number[]
+
+}
 
 type ScatterGroupPlotProps = {
-  data: ScatterGroupPlotDatum[];
-};
+  data: ScatterGroupPlotDatum[]
+  xlabel?: string
+  ylabel: string
+}
 
 const getAverage = (arr: number[]): number => {
   if (arr.length === 0) return 0
@@ -46,26 +50,26 @@ function getStandardDeviation(arr: number[]): number {
   return Math.sqrt(unbiasedVariance)
 }
 
-export default function ScatterGroupPlot({data}: ScatterGroupPlotProps) {
+export default function ScatterGroupPlot({data, xlabel = "", ylabel}: ScatterGroupPlotProps) {
   const scatterData = data.flatMap((datum, index) =>
     datum.values.map((value) => ({
       x: index,
       y: value,
       category: datum.category,
     }))
-  );
+  )
 
 
   function GroupTooltip({active, payload}: any) {
     if (!active || !payload?.length) {
-      return null;
+      return null
     }
     
-    const category = payload[0].payload.category;
-    const group = data.find((d) => d.category === category);
+    const category = payload[0].payload.category
+    const group = data.find((d) => d.category === category)
   
     if (!group) {
-      return null;
+      return null
     }
   
     return (
@@ -82,32 +86,22 @@ export default function ScatterGroupPlot({data}: ScatterGroupPlotProps) {
 
 
   return (
-    <ScatterChart
-      style={{
-        width: "100%",
-        maxWidth: "700px",
-        aspectRatio: 1.618,
-      }}
-    >
+    <ScatterChart style={{ width: "100%", maxWidth: "700px", aspectRatio: 1.618, padding: "8px" }}>
       <XAxis
         type="number"
         dataKey="x"
         domain={[-0.5, data.length - 0.5]}
         ticks={data.map((_, index) => index)}
         tickFormatter={(value) => data[value]?.category ?? ""}
+        label={{ value: xlabel}}
       />
 
-      <YAxis
-        type="number"
-        dataKey="y"
-      />
+      <YAxis type="number" dataKey="y" label={{ value: ylabel, angle: -90, position: "insideLeft"}}/>
 
-      <Scatter
-        data={scatterData}
-        dataKey="y"
-      />
+      <Scatter data={scatterData} dataKey="y" fill="#00C49F"/>
 
-      <Tooltip content={GroupTooltip}/>
+      <Tooltip content={GroupTooltip} isAnimationActive={false}/>
+      <CartesianGrid />
     </ScatterChart>
-  );
+  )
 }

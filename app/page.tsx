@@ -91,6 +91,7 @@ export default function Home() {
           { category: "B", values: [8, 10, 12, 13, 15, 17, 25] },
           { category: "C", values: [20, 21, 22, 25, 27, 30, 35, 100] },
         ]}
+        ylabel="寸法"
       />
     </div>
   );
