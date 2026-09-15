@@ -4,6 +4,7 @@ import Link from "next/link";
 import BarChartComponent from "./components/charts/BarChartComponent";
 import BoxPlot from "./components/charts/BoxPlot";
 import DataTable from "./components/Table";
+import ScatterGroupPlot from "./components/charts/ScatterGroupPlot";
 
 
 export default function Home() {
@@ -61,7 +62,7 @@ export default function Home() {
       /> */}
 
 
-      <DataTable
+      {/* <DataTable
        data={data}
        rowKey={datum => datum.name}
        columns={[
@@ -83,6 +84,13 @@ export default function Home() {
           header: "PV"
         }
        ]}
+      /> */}
+      <ScatterGroupPlot
+        data={[
+          { category: "A", values: [12, 15, 18, 20, 21, 25] },
+          { category: "B", values: [8, 10, 12, 13, 15, 17, 25] },
+          { category: "C", values: [20, 21, 22, 25, 27, 30, 35, 100] },
+        ]}
       />
     </div>
   );
