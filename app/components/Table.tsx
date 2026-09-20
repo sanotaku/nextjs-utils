@@ -10,19 +10,19 @@ export type Column<T> = {
   render?: (row: T) => ReactNode
 }
 
-type DataTableProps<T> = {
+type TableProps<T> = {
   data: T[]
   columns: Column<T>[]
   rowKey?: (row: T, index: number) => string | number
   onRowClick?: (row: T) => void
 }
 
-export default function DataTable<T>({
+export default function Table<T>({
   data,
   columns,
   rowKey,
   onRowClick,
-}: DataTableProps<T>) {
+}: TableProps<T>) {
   const getAlignClass = (align: Column<T>["align"]) => {
     switch (align) {
       case "center":
