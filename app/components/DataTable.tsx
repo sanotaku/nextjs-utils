@@ -1,4 +1,5 @@
 "use client"
+
 type DataTableProps = {
   columnsArray: string[][]
   indexArray: string[]
@@ -6,8 +7,13 @@ type DataTableProps = {
 }
 
 
-
 export default function DataTable({columnsArray, indexArray, data}: DataTableProps) {
+
+  if (columnsArray[0].length != data[0].length || indexArray.length != data.length) {
+    return (
+      <></>
+    )
+  }
 
   const displayColumns = columnsArray.map(columns => ["", ...columns])
 
@@ -23,10 +29,9 @@ export default function DataTable({columnsArray, indexArray, data}: DataTablePro
       conbinedData.push(tmp)
     }
 
-    const csvText = [displayColumns, ...conbinedData]
+    const csvText = [...displayColumns, ...conbinedData]
       .map((row) => row.join(",")).join("\n")
   
-    // Excelなどで文字化けしにくくする
     const blob = new Blob(["\uFEFF" + csvText], { type: "text/csv;charset=utf-8;" })
   
     const url = URL.createObjectURL(blob)
@@ -43,6 +48,7 @@ export default function DataTable({columnsArray, indexArray, data}: DataTablePro
     <>
       <div className="overflow-x-auto">
         <table className="divide-y divide-gray-200 text-sm shadow-md">
+
           <thead className="divide-y divide-gray-200 bg-gray-50">
             {displayColumns.map((columns, idx) => (
               <tr key={idx}>
@@ -50,15 +56,16 @@ export default function DataTable({columnsArray, indexArray, data}: DataTablePro
               </tr>
             ))}
           </thead>
+
           <tbody className="divide-y divide-x divide-gray-200 bg-white">
-            
             {data.map((dataRecord, idx) => (
               <tr key={idx} className="hover:bg-blue-50 text-center">
                 <td className="px-4 py-1 text-gray-900">{indexArray[idx]}</td>
-                {dataRecord.map(datum => (<td key={datum} className="px-1 py-1 text-gray-900 text-center">{datum}</td>))}
+                {dataRecord.map(datum => (<td key={datum} className="px-1 py-1 text-gray-900">{datum}</td>))}
               </tr>
             ))}
           </tbody>
+
         </table>
 
         <button className="bg-blue-500 hover:bg-blue-700 disabled:bg-gray-500 text-white my-2 px-2 py-1 rounded-md" onClick={handleDownload}>csvでダウンロード</button>
