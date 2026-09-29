@@ -113,8 +113,9 @@ export default function Home() {
       <Table
         data={data}
         columns={columns}
-        height="400px"
+        height="210px"
         dense
+        onRowClick={(row) => console.log(row.id)}
       />
     </div>
   )

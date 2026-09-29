@@ -27,6 +27,7 @@ export default function Table<T>({
   height,
   dense = false
 }: TableProps<T>) {
+
   const getAlignClass = (align: Column<T>["align"]) => {
     switch (align) {
       case "center":
@@ -82,11 +83,7 @@ export default function Table<T>({
                   border-neutral-100
                   last:border-b-0
                   hover:bg-blue-50
-                  ${
-                    onRowClick
-                      ? "cursor-pointer hover:bg-neutral-50"
-                      : ""
-                  }
+                  ${onRowClick ? "cursor-pointer" : ""}
                 `}
               >
                 {columns.map((column) => (
