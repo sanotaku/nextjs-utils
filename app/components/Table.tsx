@@ -15,6 +15,8 @@ type TableProps<T> = {
   columns: Column<T>[]
   rowKey?: (row: T, index: number) => string | number
   onRowClick?: (row: T) => void
+  height?: string
+  dense?: boolean
 }
 
 export default function Table<T>({
@@ -22,6 +24,8 @@ export default function Table<T>({
   columns,
   rowKey,
   onRowClick,
+  height,
+  dense = false
 }: TableProps<T>) {
   const getAlignClass = (align: Column<T>["align"]) => {
     switch (align) {
@@ -34,30 +38,40 @@ export default function Table<T>({
     }
   }
 
-  return (
-    <div className="w-full overflow-hidden rounded-lg border border-neutral-200 bg-white">
-      <div className="overflow-x-auto">
-        <table className="w-full border-collapse text-sm">
-          <thead className="bg-neutral-50">
-            <tr className="border-b border-neutral-200">
-              {columns.map((column) => (
-                <th
-                  key={String(column.key)}
-                  style={{ width: column.width }}
-                  className={`
-                    h-11
-                    px-4
-                    font-medium
-                    text-neutral-600
-                    ${getAlignClass(column.align)}
-                  `}
-                >
-                  {column.header}
-                </th>
-              ))}
-            </tr>
-          </thead>
+  const heightClassHeader = dense ? "h-8" : "h-11"
+  const heightClassBody = dense ? "h-8" : "h-12"
 
+  return (
+    <div className="w-full rounded-lg border border-neutral-200 bg-white">
+      {/* Header */}
+      <table className="w-full border-collapse text-sm">
+        <thead className="bg-neutral-50">
+          <tr className="border-b border-neutral-200">
+            {columns.map((column) => (
+              <th
+                key={String(column.key)}
+                style={{ width: column.width }}
+                className={`
+                  ${heightClassHeader}
+                  px-4
+                  font-medium
+                  text-neutral-600
+                  ${getAlignClass(column.align)}
+                `}
+              >
+                {column.header}
+              </th>
+            ))}
+          </tr>
+        </thead>
+      </table>
+
+      {/* Body */}
+      <div
+        className="overflow-y-auto overflow-x-auto"
+        style={height ? { height } : undefined}
+      >
+        <table className="w-full border-collapse text-sm">
           <tbody>
             {data.map((row, index) => (
               <tr
@@ -67,7 +81,7 @@ export default function Table<T>({
                   border-b
                   border-neutral-100
                   last:border-b-0
-                  transition-colors
+                  hover:bg-blue-50
                   ${
                     onRowClick
                       ? "cursor-pointer hover:bg-neutral-50"
@@ -78,8 +92,9 @@ export default function Table<T>({
                 {columns.map((column) => (
                   <td
                     key={String(column.key)}
+                    style={{ width: column.width }}
                     className={`
-                      h-12
+                      ${heightClassBody}
                       px-4
                       text-neutral-900
                       ${getAlignClass(column.align)}
